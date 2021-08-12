@@ -1,80 +1,81 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
+import { register } from "../actions/auth";
 
-export default function Register() {
-
-    const [state, setState] = useState({ loading: false });
+const Register = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmpassword, setConfirmpassword] = useState("");
+    const [successful, setSuccessful] = useState(false);
 
-    async function submitForm() {
+    const dispatch = useDispatch();
 
-      
+    const onChangeEmail = (e: any) => {
+        const email = e.target.value;
+        setEmail(email);
+    };
 
-        setState({ ...state, loading: true });
-        const response = await fetch(`https://rails-to-do-list-narola.herokuapp.com/v1/signup`, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ email: email, password: password, confirmpassword: confirmpassword })
-        });
-        
-       
-        const content = await response.json();
-        setState({ ...state, loading: false });
-        console.log(content);
-       
+    const onChangePassword = (e: any) => {
+        const password = e.target.value;
+        setPassword(password);
+    };
 
-      
-    }
+    const handleRegister = (e: any) => {
+        e.preventDefault();
 
+        setSuccessful(false);
 
+        dispatch(register(email, password))
+
+    };
 
     return (
-        <div>
-            <h1>Register</h1>
-            <div>
-                <label>Email</label>
-                <input
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    type="input"
-                    id="email"
+        
+        <div className="col-md-12">
+            <div className="card card-container">
+                <h1>Register</h1>
 
-                />
-            </div>
-            <div>
-                <label>Password</label>
-                <input
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    type="password"
-                    id="password"
-                />
-            </div>
-            <div>
-                <label>Confirm Password</label>
-                <input
-                    value={confirmpassword}
-                    onChange={e => setConfirmpassword(e.target.value)}
-                    type="password"
-                    id="password"
-                />
-            </div>
-            <div>
+                <form onSubmit={handleRegister} >
+                    {!successful && (
+                        <div>
 
-                <button type="submit" className="btn-join" onClick={submitForm}>
-                    Register
-                </button>
-                <Link to="/login">Login
-                </Link>
+                            <div className="form-group">
+                                <label htmlFor="email">Email</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="email"
+                                    value={email}
+                                    onChange={onChangeEmail}
 
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="password">Password</label>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    name="password"
+                                    value={password}
+                                    onChange={onChangePassword}
+
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <button className="btn btn-primary btn-block">Sign Up</button>
+                                <Link to="/login">Login</Link>
+                            </div>
+                        </div>
+                    )}
+
+
+                </form>
             </div>
-
         </div>
-    )
-}
+    );
+};
+
+export default Register;
