@@ -1,61 +1,79 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../actions/auth";
 import { Link } from 'react-router-dom';
 
 
-export default function Signup() {
-
-  const [state, setState] = useState({ loading: false });
+const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  async function loginForm() {
 
-    setState({ ...state, loading: true });
-    const response = await fetch(`https://rails-to-do-list-narola.herokuapp.com/v1/login`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ email: email, password: password })
-    });
-    const content = await response.json();
-    setState({ ...state, loading: false });
-    console.log(content);
+  const dispatch = useDispatch();
+
+  const onChangeEmail = (e: any) => {
+    const email = e.target.value;
+    setEmail(email);
+  };
+
+  const onChangePassword = (e: any) => {
+    const password = e.target.value;
+    setPassword(password);
+  };
+
+  const handleLogin = (e: any) => {
+    e.preventDefault();
+
+  dispatch(login(email, password))
+
   }
 
-
   return (
-            <div>
 
-              <h1>Login</h1>
-              <div>
+    <div className="col-md-12">
+      <h1>Login</h1>
+      <div className="card card-container">
+       
+
+        <form onSubmit={handleLogin} >
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              className="form-control"
+              name="username"
+              value={email}
+              onChange={onChangeEmail}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              name="password"
+              value={password}
+              onChange={onChangePassword}
+            />
+          </div>
+
+          <div className="form-group">
+            <button className="btn btn-primary btn-block" >
+
+              <span>Login</span>
+            </button>
+            <Link to="/">Register</Link>
+
+          </div>
 
 
-                <label>Email</label>
-                <input
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  type="input"
-                  id="email"
-                />
-              </div>
-      <div>
-        <label>Password</label>
-        <input
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          type="password"
-          id="password"
-        />
+        </form>
       </div>
-
-
-      <button className="btn-join" onClick={loginForm}>
-
-      </button>
-      <Link to="/">Register</Link>
     </div>
-  )
-}
+  );
+
+};
+
+export default Login;
