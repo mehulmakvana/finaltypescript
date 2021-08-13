@@ -3,29 +3,33 @@ import {
     REGISTER_FAIL,
      LOGIN_SUCCESS,
      LOGIN_FAIL,
-    LOGOUT,
+    LOGOUT, 
     SET_MESSAGE,
   } from "./types";
   
-  import { history } from '../helpers/history';
+  import {history} from '../helpers/history'
 
   import AuthService from "../services/auth.service";
+
   
   export const register = ( email?:string, password?:string) => (dispatch:any) => {
     return AuthService.register( email, password).then(
       (response) => {
-        history.push('/login');
+      
         dispatch({
           type: REGISTER_SUCCESS,
-          
+
         });
+        history.push('/login');
+       
   
         dispatch({
           type: SET_MESSAGE,
           payload: response.data.message,
         });
-  
+
         return Promise.resolve();
+  
       },
       (error) => {
         const message =
@@ -56,7 +60,7 @@ import {
           type: LOGIN_SUCCESS,
           payload: { user: data },
         });
-  
+        history.push('/home');
         return Promise.resolve();
       },
       (error) => {
