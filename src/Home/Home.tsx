@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
@@ -8,8 +8,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import { useHistory } from "react-router-dom";
-import { Add } from '../interfaces';
-import UserService from "../services/user.service";
+// import { Add } from '../interfaces';
+// import UserService from "../services/user.service";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export const Home: React.FC<Add> = () => {
+export const Home = () => {
 
   const classes = useStyles();
 
@@ -99,40 +99,40 @@ export const Home: React.FC<Add> = () => {
 
   const [posts, setPosts] = useState([]);
 
-  const show =() => {
+  // const show =() => {
 
   
-  UserService.getAddData().then(
-    (response) => {
-      const { data = [] } = response;
-      setPosts(data.data.todos);
-      console.log("show data:::::::::::::", response.data.data)
+  // UserService.getAddData().then(
+  //   (response:any) => {
+  //     const { data = [] } = response;
+  //     setPosts(data.data.todos);
+  //     console.log("show data:::::::::::::", response.data.data)
 
-    },
+  //   },
 
-    (error) => {
-      const _data1 =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
+  //   (error:any) => {
+  //     const _data1 =
+  //       (error.response &&
+  //         error.response.data &&
+  //         error.response.data.message) ||
+  //       error.message ||
+  //       error.toString();
 
-      setPosts(_data1);
+  //     setPosts(_data1);
 
 
-    }
-  );
-  }
+  //   }
+  // );
+  // }
 
-  const onDelete = (id:any) => {
+  // const onDelete = (id:any) => {
 
-    UserService.deleteData(id).then(
-      (response) => {
-        return response;
-      },
-    );
-    }
+  //   UserService.deleteData(id).then(
+  //     (response) => {
+  //       return response;
+  //     },
+  //   );
+  //   }
 
   return (
 
@@ -192,7 +192,7 @@ export const Home: React.FC<Add> = () => {
               fullWidth
               variant="contained"
               color="primary"
-             onClick={show}
+          
             >
               Add Data
 
@@ -239,7 +239,7 @@ export const Home: React.FC<Add> = () => {
                       <td>{post.data}</td>
                       <td>{post.due_date}</td>
                       <td>{post.priority}</td>
-                      <td><button onClick={onDelete}>Delete</button></td>
+                      <td><button>Delete</button></td>
                     </tr>
                   )
                 })
