@@ -75,11 +75,9 @@ export const Register = () => {
     dispatch(register(email, password));
   };
 
-
-
-
-
   return (
+
+    
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>

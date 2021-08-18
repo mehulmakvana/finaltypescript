@@ -6,6 +6,7 @@ import Register from './Register/Register';
 import Login from './Login/Login';
 import { history } from "./helpers/history";
 import Home from './Home/Home';
+import AddData from './Home/AddData';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route exact path="/" component={Register} />
           <Route path="/login" component={Login} />
           <Route path="/home" component={Home} />
+          <Route path="/data" component={AddData} />
 
 
           <Redirect from="*" to="/" />
