@@ -60,7 +60,7 @@ import {
           type: LOGIN_SUCCESS,
           payload: { user: data },
         });
-        history.push('/home');
+        history.push('/data');
         return Promise.resolve();
       },
       (error) => {
@@ -87,7 +87,7 @@ import {
   
   export const logout = () => (dispatch:any) => {
     AuthService.logout();
-  
+    history.push('/login');
     dispatch({
       type: LOGOUT,
     });

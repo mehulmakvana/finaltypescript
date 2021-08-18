@@ -19,16 +19,15 @@ const login = (email?:string, password?:string) => {
       password,
     })
     .then((response) => {
-      if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-      }
+   
+        localStorage.setItem("auth_token", response.data.data.auth_token);
 
       return response.data;
     });
 };
 
 const logout = () => {
-  localStorage.removeItem("user");
+  localStorage.removeItem("auth_token");
 };
 
 export default {

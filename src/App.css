@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+#icon
+{
+cursor: pointer;
+
+}
+/* #icon:hover{
+  background-color: yellow;
+} */
+
+.back{
+  cursor: pointer;
+}
+.back:hover{
+  color: blue;
+}
