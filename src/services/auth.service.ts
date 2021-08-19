@@ -26,6 +26,8 @@ const login = (email?:string, password?:string) => {
     });
 };
 
+
+
 const logout = () => {
   localStorage.removeItem("auth_token");
 };
@@ -33,5 +35,6 @@ const logout = () => {
 export default {
   register,
   login,
+
   logout,
 };
