@@ -19,8 +19,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
 
-
-
 const StyledTableCell = withStyles((theme) => ({
     head: {
         // backgroundColor: theme.palette.common.black,
@@ -50,13 +48,12 @@ const useStyles = makeStyles({
     },
 });
 
-
-
 export default function Data() {
 
 
-    const [id, setId] = useState();
+    const [id, setId] = useState(null);
     const [posts, setPosts] = useState([]);
+
     useEffect(() => {
 
         UserService.getAddData().then(
@@ -64,7 +61,9 @@ export default function Data() {
                 const { data = [] } = response;
                 setPosts(data.data.todos);
                 console.log("show data:::::::::::::", response.data.data)
+
             }
+
         );
     }, []);
 
@@ -84,12 +83,19 @@ export default function Data() {
         });
     };
 
+    // const getDataDsc = () => {
 
+    //     UserService.getAddDataDsc()
+    //         .then((getData) => {
+    //             setPosts(getData.data.data.todos);
+                 
+    //     });
+
+    // };
 
     const nextPath = (path: any) => {
         history.push(path)
     }
-
 
     const classes = useStyles();
 
@@ -105,11 +111,11 @@ export default function Data() {
     }, []);
 
 
-
     const [open, setOpen] = React.useState(false);
 
-    const handleClickOpen = () => {
-        setId(id);
+    const handleClickOpen = (id:any) => {
+          setId(id);
+         
         setOpen(true);
     };
 
@@ -117,16 +123,25 @@ export default function Data() {
         setOpen(false);
     };
 
-
-    const onDelete = (id: any) => {
-        setId(id);
+    const onDelete = (id:any) => {
+       
         UserService.deleteData(id)
             .then(() => {
                 getData();
             })
+
         setOpen(false);
     }
 
+
+    const handleTableChange = (sorter: any) => {
+        UserService.SortData(sorter.field, sorter.order === "ascend" ? 'asc' : 'desc')
+        .then((getData) => {
+            setPosts(getData.data.data.todos);
+        })
+    }  
+
+    
     return (
         <div>
 
@@ -140,14 +155,16 @@ export default function Data() {
             <br />
             <br />
 
-
-
-            <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="customized table">
+            <TableContainer component={Paper} >
+                <Table className={classes.table} aria-label="customized table"
+                
+                >
                     <TableHead>
-                        <TableRow>
-                            <StyledTableCell align="center">ID</StyledTableCell>
-                            <StyledTableCell align="center">Data</StyledTableCell>
+                        <TableRow >
+                            <StyledTableCell align="center" onClick={(sorter) => handleTableChange(sorter)}
+                            
+                        >ID</StyledTableCell>
+                            <StyledTableCell align="center" >Data</StyledTableCell>
                             <StyledTableCell align="center">Date</StyledTableCell>
                             <StyledTableCell align="center">Priority</StyledTableCell>
                             <StyledTableCell align="center">Action</StyledTableCell>
@@ -162,6 +179,7 @@ export default function Data() {
                                     return (
 
                                         <StyledTableRow key={post.name}>
+
                                             <StyledTableCell align="center">
                                                 {post.id}
                                             </StyledTableCell>
@@ -171,10 +189,13 @@ export default function Data() {
 
                                             <StyledTableCell align="center">
                                                 {/* <button onClick={() => onDelete(post.id)} >Delete</button>  */}
-                                                <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+                                                <Button variant="outlined" color="primary" onClick={()=>handleClickOpen(post.id)}>
                                                     Delete
                                                 </Button>
+                         
                                             </StyledTableCell>
+
+
                                         </StyledTableRow>
 
                                     )
@@ -189,7 +210,6 @@ export default function Data() {
 
                 <Dialog open={open} >
 
-
                     <DialogTitle id="alert-dialog-title">{"Are You Sure Delete?"}</DialogTitle>
 
                     <DialogActions>
@@ -197,20 +217,17 @@ export default function Data() {
                         <Button onClick={handleClose} color="primary">
                             Cancle
                         </Button>
-                        <Button onClick={onDelete} id={id} color="primary" autoFocus>
+                        <Button onClick={()=> onDelete(id)}  color="primary" autoFocus>
                             Delete
                         </Button>
 
-
                     </DialogActions>
-
-
-
 
                 </Dialog>
 
             </div>
         </div>
+
     )
 }
 

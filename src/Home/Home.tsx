@@ -54,9 +54,14 @@ const Home = () => {
         setPriority(priority);
     };
 
+    
+
     const handleAdd = (e: any) => {
         e.preventDefault();
+
         const store = { data: data, due_date: due_date, priority: priority }
+
+
         fetch('https://rails-to-do-list-narola.herokuapp.com/v1/todos', {
             method: 'POST',
             headers: {
@@ -65,15 +70,13 @@ const Home = () => {
             },
             body: JSON.stringify(store),
         })
-            .then(response => response.json()
-            )
+            .then(response => response.json())
+            
             .then(data => {
                 console.log('Success:', data);
                 console.log('token:', data.auth_token);
             })
-            // .then(() => {
-            //     show();
-            // })
+         
 
             .catch((error) => {
                 console.error('Error:', error);
@@ -84,7 +87,6 @@ const Home = () => {
     const nextPath = (path: any) => {
         history.push(path)
     }
-
 
 
 
@@ -101,6 +103,7 @@ const Home = () => {
 
 
 
+    
     return (
 
         <Container component="main" maxWidth="xs">
@@ -166,6 +169,7 @@ const Home = () => {
                             color="primary"
                             className={classes.submit}
                             onClick={handleClickOpen}
+                            
                         >
                             Add Data
                         </Button>
@@ -191,9 +195,6 @@ const Home = () => {
 
 
                     </DialogActions>
-
-
-
 
                 </Dialog>
             </div>
