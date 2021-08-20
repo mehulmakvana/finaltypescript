@@ -7,6 +7,7 @@ import Login from './Login/Login';
 import { history } from "./helpers/history";
 import Home from './Home/Home';
 import AddData from './Home/AddData';
+import Sort from './Home/Sort';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/home" component={Home} />
           <Route path="/data" component={AddData} />
+          <Route path="/sort" component={Sort} />
 
 
           <Redirect from="*" to="/" />
