@@ -164,7 +164,7 @@ export default function Data() {
  
                     <TableHead>
                 
-                        <TableRow className="sort" onClick={handleTableChange}>
+                        <TableRow className="sort" >
                             <StyledTableCell align="center" >ID</StyledTableCell>
                             <StyledTableCell align="center" >Data</StyledTableCell>
                             <StyledTableCell align="center">Date</StyledTableCell>

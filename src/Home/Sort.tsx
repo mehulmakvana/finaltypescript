@@ -1,12 +1,21 @@
-import { DataGrid, GridColDef } from '@material-ui/data-grid';
+import { DataGrid } from '@material-ui/data-grid';
 import UserService from "../services/user.service";
 import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Icon from '@material-ui/core/Icon';
+import { history } from '../helpers/history';
+import { useDispatch } from "react-redux";
+import { logout } from "../actions/auth";
+import { loadCSS } from 'fg-loadcss';
+import DemoModal from '../Home/DemoModal';
 
-export default function DataTable() {
+
+
+
+export default function DataTable(props: any) {
 
     const [id, setId] = useState(null);
 
@@ -16,7 +25,7 @@ export default function DataTable() {
 
     const handleClickOpen = (id: any) => {
         setId(id);
-
+        console.log("id::::::", id);
         setOpen(true);
     };
 
@@ -31,46 +40,52 @@ export default function DataTable() {
     };
 
 
-    const onDelete = (id: any) => {
+    const onDelete = (row: any) => {
 
-        UserService.deleteData(id)
+        UserService.deleteData(row.id)
             .then(() => {
                 getData();
             })
-            setOpen(false);
+        setOpen(false);
     }
 
 
-    const columns: GridColDef[] = [
 
-        { field: 'id', headerName: 'ID', width: 100, sortable: true },
+    const columns = [
+
+        { field: 'id', headerName: 'ID', width: 350, sortable: true },
 
         {
             field: 'data',
             headerName: 'Data',
-            width: 150,
+            width: 400,
             sortable: true,
         },
         {
             field: 'due_date',
             headerName: 'Date',
-            type: 'number',
-            width: 150,
+            width: 400,
             sortable: true,
         },
         {
             field: 'priority',
             headerName: 'Priority',
-            width: 150,
+            width: 400,
             sortable: true,
         },
         {
             field: 'delete',
             headerName: 'Delete',
-            width: 150,
+            width: 350,
             sortable: true,
+            renderCell: (id: any) => (
+                <>
+                    <Button onClick={() => handleClickOpen(id)}>Delete</Button>
 
-            renderCell: (id: any) => <Button onClick={handleClickOpen}>Delete</Button>
+
+                </>
+
+            )
 
         },
 
@@ -91,9 +106,32 @@ export default function DataTable() {
         );
     }, []);
 
-  
+    const dispatch = useDispatch();
 
-  
+    const handleLogout = (e: any) => {
+        e.preventDefault();
+
+        dispatch(logout())
+
+    }
+
+    const nextPath = (path: any) => {
+        history.push(path)
+    }
+
+
+    React.useEffect(() => {
+        const node = loadCSS(
+            'https://use.fontawesome.com/releases/v5.12.0/css/all.css',
+
+        );
+
+        return () => {
+            node.parentNode!.removeChild(node);
+        };
+    }, []);
+
+
 
 
     // const handleTableChange = (sortable: any) => {
@@ -115,11 +153,12 @@ export default function DataTable() {
 
 
     const handleSortModelChange = (sortable: any) => {
-        console.log("5555");
+        console.log(sortable);
 
-        UserService.SortData(sortable.id, sortable.sortingOrder === "ascend" ? 'asc' : 'desc')
+        UserService.SortData(sortable.field, sortable.sort === "asc" ? 'asc' : 'desc')
             .then((getData) => {
-                console.log("5555");
+
+
 
                 //  setPosts(getData.data.data.todos);
             });
@@ -127,34 +166,59 @@ export default function DataTable() {
 
 
     return (
-        <div style={{ height: 400, width: '100%' }}>
-            <DataGrid
-                rows={posts}
-                columns={columns}
-                pageSize={5}
-                onSortModelChange={(sortable) => handleSortModelChange(sortable)}
 
-            />
+        <div>
 
-            <div>
+            <h3>ToDos List</h3>
+            <Icon id="icon" className="fa fa-plus-circle" color="primary" style={{ fontSize: 30 }} onClick={() => nextPath('/home')}></Icon>
 
-                <Dialog open={open} >
+            <br />
+            <button onClick={handleLogout}>Logout</button>
 
-                    <DialogTitle id="alert-dialog-title">{"Are You Sure Delete?"}</DialogTitle>
+            <br />
+            <br />
+            <br />
 
-                    <DialogActions>
 
-                        <Button onClick={handleClose} color="primary">
-                            Cancle
-                        </Button>
-                        <Button onClick={() => onDelete(id)} color="primary" autoFocus>
-                            Delete
-                        </Button>
+            <div style={{ height: 700, width: '100%' }}>
+                <DataGrid
+                    rows={posts}
+                    columns={columns}
+                    pageSize={10}
+                    onSortModelChange={handleSortModelChange}
 
-                    </DialogActions>
+                />
 
-                </Dialog>
+          
 
+                    <Dialog open={open} >
+                        
+
+
+                        <DialogTitle id="alert-dialog-title">
+                            suredelete= {"Are You Sure Delete?"}
+                        </DialogTitle>
+
+                        <DialogActions>
+
+                            can_body={
+                                <Button onClick={handleClose}
+                                    color="primary">
+                                    Cancle
+                                </Button>
+                            }
+                            del_body={
+                                <Button onClick={() => onDelete(id)}
+                                    color="primary" autoFocus>
+                                    Delete
+                                </Button>
+                            }
+
+                        </DialogActions>
+               
+
+                    </Dialog>
+         
 
             </div>
 

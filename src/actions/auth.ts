@@ -60,7 +60,7 @@ import {
           type: LOGIN_SUCCESS,
           payload: { user: data },
         });
-        history.push('/data');
+        history.push('/sort');
         return Promise.resolve();
       },
       (error) => {
