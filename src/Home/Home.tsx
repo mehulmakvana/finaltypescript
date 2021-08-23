@@ -11,6 +11,8 @@ import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Modal from '@material-ui/core/Modal';
+import {Theme, createStyles } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -101,7 +103,54 @@ const Home = () => {
         setOpen(false);
     };
 
+    function rand() {
+        return Math.round(Math.random() * 20) - 10;
+      }
 
+    function getModalStyle() {
+        const top = 50 + rand();
+        const left = 50 + rand();
+      
+        return {
+          top: `${top}%`,
+          left: `${left}%`,
+          transform: `translate(-${top}%, -${left}%)`,
+        };
+      }
+      const use_Styles = makeStyles((theme: Theme) =>
+      createStyles({
+        paper: {
+          position: 'absolute',
+          width: 400,
+          backgroundColor: theme.palette.background.paper,
+          border: '2px solid #000',
+          boxShadow: theme.shadows[5],
+          padding: theme.spacing(2, 4, 3),
+        },
+      }),
+    );
+
+
+      const _classes = use_Styles();
+    const [modalStyle] = React.useState(getModalStyle);
+
+    const body = (
+        <div style={modalStyle} className={_classes.paper}>
+          <h2 id="simple-modal-title">Text in a modal</h2>
+          <p id="simple-modal-description">
+            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          </p>
+         
+        </div>
+      );
+
+      const handleOpen = () => {
+        setOpen(true);
+      };
+    
+      const handle_Close = () => {
+        setOpen(false);
+      };
 
     
     return (
@@ -179,8 +228,8 @@ const Home = () => {
             </div>
 
             <div>
-                <Dialog open={open} >
 
+                {/* <Dialog open={open} >
 
                     <DialogTitle id="alert-dialog-title">{"ToDo Added Successfully"}</DialogTitle>
 
@@ -189,14 +238,24 @@ const Home = () => {
                         <Button onClick={handleClose} color="primary">
                             Cancle
                         </Button>
-                        <Button color="primary" autoFocus onClick={() => nextPath('/data')}>
+                        <Button color="primary" autoFocus onClick={() => nextPath('/sort')}>
                             Back to Todo List
                         </Button>
 
-
                     </DialogActions>
 
-                </Dialog>
+                </Dialog> */}
+                 <button type="button" onClick={handleOpen}>
+        Open Modal
+      </button>
+                 <Modal
+        open={open}
+        onClose={handle_Close}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {body}
+      </Modal>
             </div>
 
 

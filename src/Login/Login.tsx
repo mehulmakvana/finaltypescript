@@ -89,11 +89,7 @@ const Login = () => {
           Sign in
         </Typography>
 
-
-
         <form className={classes.form} onSubmit={handleLogin} >
-
-
 
           <TextField
             variant="outlined"
@@ -107,7 +103,6 @@ const Login = () => {
             autoFocus
             onChange={onChangeEmail}
           />
-
 
           <TextField
             variant="outlined"
